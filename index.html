@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Góc Kỉ Niệm Gia Đình Ông Bà 7</title>
+  <title>Kho Ảnh Gia Đình</title>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -18,179 +18,43 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Be Vietnam Pro', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      line-height: 1.6;
-      padding-bottom: 60px;
-    }
+    body { font-family: 'Be Vietnam Pro', sans-serif; background-color: var(--bg-color); color: var(--text-main); padding-bottom: 60px; }
 
-    /* Header kính mờ hiện đại */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(253, 251, 247, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 20px;
-      text-align: center;
-    }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 20px; text-align: center; }
+    header h1 { font-size: 1.6rem; color: var(--text-main); font-weight: 700; }
+    header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
 
-    header h1 {
-      font-size: 1.6rem;
-      color: var(--text-main);
-      font-weight: 700;
-    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
-    header p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    /* Khu vực tải ảnh lên */
-    .upload-card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-      border: 1px solid var(--border);
-      max-width: 550px;
-      margin: 10px auto 40px;
-      text-align: center;
-    }
-
-    .file-drop-area {
-      border: 2px dashed #D6D3D1;
-      border-radius: 14px;
-      padding: 25px 15px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: #FAF8F5;
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .file-drop-area:hover {
-      border-color: var(--primary);
-      background: #FFF9F6;
-    }
-
+    .upload-card { background: var(--card-bg); border-radius: 20px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); max-width: 550px; margin: 10px auto 40px; text-align: center; }
+    .file-drop-area { border: 2px dashed #D6D3D1; border-radius: 14px; padding: 25px 15px; cursor: pointer; background: #FAF8F5; margin-bottom: 16px; display: block; }
+    .file-drop-area:hover { border-color: var(--primary); background: #FFF9F6; }
     .file-drop-area input[type="file"] { display: none; }
 
-    .preview-img {
-      max-height: 200px;
-      max-width: 100%;
-      border-radius: 10px;
-      margin-top: 10px;
-      display: none;
-      object-fit: cover;
-    }
-
-    .input-caption {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-      outline: none;
-      transition: border 0.2s;
-    }
-
+    .input-caption { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 0.95rem; margin-bottom: 16px; outline: none; }
     .input-caption:focus { border-color: var(--primary); }
 
-    .btn-upload {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s;
-    }
-
+    .btn-upload { background-color: var(--primary); color: white; border: none; padding: 14px 28px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; width: 100%; }
     .btn-upload:hover { background-color: var(--primary-hover); }
     .btn-upload:disabled { background-color: #D6D3D1; cursor: not-allowed; }
 
-    #statusText {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
+    #statusText { margin-top: 12px; font-size: 0.9rem; font-weight: 500; }
 
-    /* Lưới hiển thị ảnh kiểu khung Polaroid */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 24px;
-    }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+    .photo-card { background: var(--card-bg); border-radius: 16px; padding: 12px 12px 18px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); border: 1px solid var(--border); position: relative; }
+    .photo-card img { width: 100%; height: 240px; object-fit: cover; border-radius: 10px; cursor: zoom-in; }
+    .photo-caption { margin-top: 12px; font-weight: 500; font-size: 0.95rem; color: var(--text-main); }
+    .photo-date { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .btn-delete { position: absolute; top: 20px; right: 20px; background: rgba(220, 38, 38, 0.85); color: white; border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; backdrop-filter: blur(4px); }
 
-    .photo-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 12px 12px 18px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border);
-      transition: transform 0.25s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .photo-card:hover { transform: translateY(-4px); }
-
-    .photo-card img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 10px;
-      background-color: #F5F5F4;
-      cursor: zoom-in;
-    }
-
-    .photo-caption {
-      margin-top: 12px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--text-main);
-    }
-
-    .photo-date {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .loading-spinner {
-      text-align: center;
-      color: var(--text-muted);
-      grid-column: 1 / -1;
-      padding: 40px;
-    }
+    /* Modal phóng to ảnh */
     .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
     .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90vh; position: relative; top: 50%; transform: translateY(-50%); border-radius: 12px; object-fit: contain; }
     .close-btn { position: absolute; top: 15px; right: 30px; color: white; font-size: 40px; cursor: pointer; font-weight: bold; }
-    .photo-card { position: relative; }
-    .btn-delete {
-      position: absolute; top: 20px; right: 20px; background: rgba(220, 38, 38, 0.85); color: white;
-      border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; backdrop-filter: blur(4px);
-    }
-    .btn-delete:hover { background: rgb(220, 38, 38); }
   </style>
 </head>
 <body>
+
   <!-- Màn hình hỏi tên -->
   <div id="welcomeScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 400px; width: 100%; border: 1px solid var(--border);">
@@ -207,93 +71,106 @@
   </div>
 
   <header>
-    <h1>🏡 Album Kỉ Niệm Gia Đình Ông Bà 7</h1>
-    <p>Nơi lưu giữ những khoảnh khắc đáng nhớ</p>
+    <h1>🏡 Kho Ảnh Gia Đình Ông Bà 7</h1>
+    <p>Nơi lưu giữ những khoảnh khắc</p>
   </header>
 
   <div class="container">
-    <!-- Khung tải ảnh lên -->
     <div class="upload-card">
       <label class="file-drop-area" id="dropArea">
         <span id="dropText">📸 Nhấn vào đây để chọn ảnh</span>
-        <!-- Thêm chữ multiple vào input -->
         <input type="file" id="fileInput" accept="image/*" multiple>
-        <!-- Chuyển thành container để chứa nhiều ảnh xem trước -->
         <div id="previewContainer" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 15px;"></div>
       </label>
 
-      <input type="text" id="captionInput" class="input-caption" placeholder="Ghi chú bức ảnh (VD: Cả nhà đi ăn tối, Tết 2026...)">
+      <input type="text" id="captionInput" class="input-caption" placeholder="Ghi chú bức ảnh (Tùy chọn)">
       <button id="uploadBtn" class="btn-upload" onclick="uploadImage()">Tải ảnh lên</button>
       <div id="statusText"></div>
     </div>
 
-    <!-- Khu vực hiển thị album ảnh -->
     <div id="gallery" class="gallery-grid">
-      <div class="loading-spinner">Đang tải những kỉ niệm...</div>
+      <div style="text-align:center; grid-column: 1/-1; padding:40px;">Đang tải album...</div>
     </div>
   </div>
 
+  <!-- Modal phóng to ảnh -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-btn">&times;</span>
+    <img class="modal-content" id="modalImg">
+  </div>
+
   <script>
-    let currentUser = "";
+    // ⚠️ NHỚ THAY ĐƯỜNG DẪN WEB APP CỦA BẠN VÀO ĐÂY
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4bJ2MhDmGF8qoSha8u9KWDs8L_UBJz5X-jGbB44AnsQz1h28TxBt9B93Gll7itgQ/exec';
     
+    let currentUser = "Người nhà";
+
+    // --- LOGIC MÀN HÌNH CHÀO MỪNG ---
+    function getSavedNames() {
+      try { return JSON.parse(localStorage.getItem('familyNames') || '[]'); } 
+      catch (e) { return []; }
+    }
+
+    function saveName(name) {
+      try {
+        const savedNames = getSavedNames();
+        if (!savedNames.includes(name)) {
+          savedNames.push(name);
+          localStorage.setItem('familyNames', JSON.stringify(savedNames));
+        }
+      } catch (e) { console.log("Trình duyệt chặn lưu offline"); }
+    }
+
     function initWelcomeScreen() {
-      const savedNames = JSON.parse(localStorage.getItem('familyNames') || '[]');
+      const savedNames = getSavedNames();
       const nameButtons = document.getElementById('nameButtons');
       nameButtons.innerHTML = '';
       
-      if (savedNames.length > 0) {
-        savedNames.forEach(name => {
-          const btn = document.createElement('button');
-          btn.textContent = name;
-          btn.style.cssText = "padding: 12px; border-radius: 10px; border: 1px solid var(--primary); background: white; color: var(--primary); font-weight: 600; cursor: pointer;";
-          btn.onclick = () => selectName(name);
-          nameButtons.appendChild(btn);
-        });
-      }
+      savedNames.forEach(name => {
+        const btn = document.createElement('button');
+        btn.textContent = name;
+        btn.style.cssText = "padding: 12px; border-radius: 10px; border: 1px solid var(--primary); background: white; color: var(--primary); font-weight: 600; cursor: pointer; width: 100%; text-align: left;";
+        btn.onclick = () => selectName(name);
+        nameButtons.appendChild(btn);
+      });
     }
 
     function selectName(name) {
       currentUser = name;
       document.getElementById('welcomeScreen').style.display = 'none';
+      loadGallery(); // Bắt đầu tải ảnh khi đã vào trong
     }
 
     function addNewName() {
       const input = document.getElementById('newNameInput').value.trim();
       if (!input) return alert("Hãy nhập tên của bạn nhé!");
-      
-      const savedNames = JSON.parse(localStorage.getItem('familyNames') || '[]');
-      if (!savedNames.includes(input)) {
-        savedNames.push(input);
-        localStorage.setItem('familyNames', JSON.stringify(savedNames));
-      }
+      saveName(input);
       selectName(input);
     }
 
-    // Chạy khi mở web
-    initWelcomeScreen();
-    // THAY ĐƯỜNG DẪN WEB APP URL CỦA BẠN VÀO ĐÂY
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4bJ2MhDmGF8qoSha8u9KWDs8L_UBJz5X-jGbB44AnsQz1h28TxBt9B93Gll7itgQ/exec';
+    // Nhấn Enter để vào nhanh
+    document.getElementById('newNameInput').addEventListener("keypress", function(e) {
+      if (e.key === "Enter") { e.preventDefault(); addNewName(); }
+    });
 
+    initWelcomeScreen();
+
+    // --- LOGIC TẢI ẢNH & HIỂN THỊ ---
     const fileInput = document.getElementById('fileInput');
-    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('previewContainer');
     const dropText = document.getElementById('dropText');
     const statusText = document.getElementById('statusText');
     const uploadBtn = document.getElementById('uploadBtn');
     const gallery = document.getElementById('gallery');
 
-    // Hiển thị ảnh xem trước khi chọn file
-    const previewContainer = document.getElementById('previewContainer');
-
     fileInput.addEventListener('change', function() {
-      previewContainer.innerHTML = ''; // Xóa ảnh xem trước cũ
+      previewContainer.innerHTML = ''; 
       const files = this.files;
-      
       if (files.length > 0) {
         dropText.textContent = `Đã chọn ${files.length} bức ảnh`;
-        
         Array.from(files).forEach(file => {
           const reader = new FileReader();
-          reader.onload = function(e) {
+          reader.onload = e => {
             const img = document.createElement('img');
             img.src = e.target.result;
             img.style.height = '80px';
@@ -304,12 +181,15 @@
           reader.readAsDataURL(file);
         });
       } else {
-        dropText.textContent = '📸 Nhấn vào đây để chọn nhiều ảnh';
+        dropText.textContent = '📸 Nhấn vào đây để chọn ảnh';
       }
     });
 
-    // Tải danh sách ảnh từ Google Drive khi mở trang
     async function loadGallery() {
+      if(SCRIPT_URL === 'DÁN_WEB_APP_URL_CỦA_BẠN_VÀO_ĐÂY') {
+        gallery.innerHTML = '<div style="text-align:center; grid-column: 1/-1;">Vui lòng cập nhật SCRIPT_URL trong mã HTML.</div>';
+        return;
+      }
       try {
         const res = await fetch(SCRIPT_URL);
         const json = await res.json();
@@ -317,7 +197,7 @@
         if (json.status === 'success') {
           gallery.innerHTML = '';
           if (json.data.length === 0) {
-            gallery.innerHTML = '<div class="loading-spinner">Chưa có bức ảnh nào. Hãy là người đầu tiên tải lên nhé!</div>';
+            gallery.innerHTML = '<div style="text-align:center; grid-column: 1/-1;">Chưa có bức ảnh nào.</div>';
             return;
           }
 
@@ -336,40 +216,29 @@
           });
         }
       } catch (err) {
-        gallery.innerHTML = '<div class="loading-spinner">Không thể tải album ảnh. Vui lòng kiểm tra lại SCRIPT_URL.</div>';
+        gallery.innerHTML = '<div style="text-align:center; grid-column: 1/-1;">Lỗi tải ảnh. Hãy kiểm tra kết nối mạng.</div>';
       }
     }
 
-    // Gửi ảnh lên Google Drive
     async function uploadImage() {
       const files = fileInput.files;
       const caption = document.getElementById('captionInput').value.trim();
 
-      if (files.length === 0) {
-        statusText.style.color = '#DC2626';
-        statusText.textContent = '⚠️ Vui lòng chọn ít nhất một bức ảnh!';
-        return;
-      }
+      if (files.length === 0) return alert('⚠️ Vui lòng chọn ảnh!');
 
       uploadBtn.disabled = true;
-      let successCount = 0;
-      let failCount = 0;
+      let successCount = 0; let failCount = 0;
 
-      // Hàm con để đọc file sang Base64
-      const readFileAsBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result.split(',')[1]);
-          reader.onerror = (e) => reject(e);
-          reader.readAsDataURL(file);
-        });
-      };
+      const readFileAsBase64 = (file) => new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+        reader.readAsDataURL(file);
+      });
 
-      // Lặp qua từng file và tải lên
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         statusText.style.color = '#78716C';
-        statusText.textContent = `Đang tải ảnh lên (${i + 1}/${files.length})... Vui lòng không đóng trang!`;
+        statusText.textContent = `Đang tải ảnh (${i + 1}/${files.length})...`;
         
         try {
           const base64Data = await readFileAsBase64(file);
@@ -377,7 +246,7 @@
             fileName: file.name,
             mimeType: file.type,
             base64: base64Data,
-            caption: caption || 'Kỉ niệm gia đình'
+            caption: caption || 'Kỉ niệm gia đình',
             uploaderName: currentUser
           };
 
@@ -386,47 +255,25 @@
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           });
-
           const result = await response.json();
-          if (result.status === 'success') {
-            successCount++;
-          } else {
-            failCount++;
-          }
-        } catch (err) {
-          failCount++;
-        }
+          if (result.status === 'success') successCount++; else failCount++;
+        } catch (err) { failCount++; }
       }
 
-      // Xử lý sau khi tải xong tất cả
       uploadBtn.disabled = false;
       uploadBtn.textContent = 'Tải ảnh lên';
-      
-      if (failCount === 0) {
-        statusText.style.color = '#16A34A';
-        statusText.textContent = `✅ Đã tải thành công ${successCount} ảnh!`;
-      } else {
-        statusText.style.color = '#D97757';
-        statusText.textContent = `⚠️ Đã tải ${successCount} ảnh. Lỗi ${failCount} ảnh.`;
-      }
+      statusText.style.color = failCount === 0 ? '#16A34A' : '#D97757';
+      statusText.textContent = failCount === 0 ? `✅ Tải thành công ${successCount} ảnh!` : `⚠️ Đã tải ${successCount} ảnh. Lỗi ${failCount} ảnh.`;
 
-      // Đặt lại form
-      fileInput.value = '';
-      document.getElementById('captionInput').value = '';
-      previewContainer.innerHTML = '';
-      dropText.textContent = '📸 Nhấn vào đây để chọn nhiều ảnh';
-      
+      fileInput.value = ''; document.getElementById('captionInput').value = '';
+      previewContainer.innerHTML = ''; dropText.textContent = '📸 Nhấn vào đây để chọn ảnh';
       loadGallery();
     }
+
     async function deletePhoto(fileId) {
-      const pass = prompt("Nhập mật khẩu quản trị để xóa ảnh:");
-      if (pass === null) return; // Hủy thao tác
-      if (pass !== "1234") {
-        alert("❌ Mật khẩu không đúng!");
-        return;
-      }
-      
-      if (!confirm("Bạn có chắc chắn muốn xóa bức ảnh này không?")) return;
+      const pass = prompt("Nhập mật khẩu (1234) để xóa ảnh:");
+      if (pass !== "1234") return alert(pass === null ? "Đã hủy thao tác." : "❌ Mật khẩu không đúng!");
+      if (!confirm("Bạn chắc chắn muốn xóa?")) return;
 
       try {
         const response = await fetch(SCRIPT_URL, {
@@ -434,38 +281,17 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'delete', fileId: fileId })
         });
-        
         const result = await response.json();
-        if (result.status === 'success') {
-          alert("✅ Đã xóa ảnh thành công!");
-          loadGallery(); // Tải lại danh sách ảnh
-        } else {
-          alert("❌ Lỗi khi xóa: " + result.message);
-        }
-      } catch (err) {
-        alert("❌ Lỗi kết nối mạng!");
-      }
+        if (result.status === 'success') { alert("✅ Đã xóa!"); loadGallery(); }
+      } catch (err) { alert("❌ Lỗi mạng!"); }
     }
 
-    // Chống lỗi XSS khi hiển thị ghi chú
-    function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, tag => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-      }[tag]));
-    }
-
-    loadGallery();
     function openModal(src) {
-  document.getElementById('imageModal').style.display = 'block';
-  document.getElementById('modalImg').src = src;
+      document.getElementById('imageModal').style.display = 'block';
+      document.getElementById('modalImg').src = src;
     }
-    function closeModal() {
-  document.getElementById('imageModal').style.display = 'none';
-    }
+    function closeModal() { document.getElementById('imageModal').style.display = 'none'; }
+    function escapeHTML(str) { return str.replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t])); }
   </script>
-  <div id="imageModal" class="modal" onclick="closeModal()">
-  <span class="close-btn">&times;</span>
-  <img class="modal-content" id="modalImg">
-  </div>
 </body>
 </html>
