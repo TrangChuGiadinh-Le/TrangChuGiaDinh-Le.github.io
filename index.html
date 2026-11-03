@@ -182,9 +182,29 @@
     .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
     .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90vh; position: relative; top: 50%; transform: translateY(-50%); border-radius: 12px; object-fit: contain; }
     .close-btn { position: absolute; top: 15px; right: 30px; color: white; font-size: 40px; cursor: pointer; font-weight: bold; }
+    .photo-card { position: relative; }
+    .btn-delete {
+      position: absolute; top: 20px; right: 20px; background: rgba(220, 38, 38, 0.85); color: white;
+      border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; backdrop-filter: blur(4px);
+    }
+    .btn-delete:hover { background: rgb(220, 38, 38); }
   </style>
 </head>
 <body>
+  <!-- Màn hình hỏi tên -->
+  <div id="welcomeScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 400px; width: 100%; border: 1px solid var(--border);">
+      <h2 style="margin-bottom: 5px;">👋 Kho Ảnh Gia Đình Ông Bà 7</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Ai đang vào album vậy?</p>
+      
+      <div id="nameButtons" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;"></div>
+      
+      <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+        <input type="text" id="newNameInput" class="input-caption" placeholder="Nhập tên..." style="margin-bottom: 10px;">
+        <button class="btn-upload" onclick="addNewName()">Vào xem album</button>
+      </div>
+    </div>
+  </div>
 
   <header>
     <h1>🏡 Album Kỉ Niệm Gia Đình Ông Bà 7</h1>
@@ -214,8 +234,45 @@
   </div>
 
   <script>
+    let currentUser = "";
+    
+    function initWelcomeScreen() {
+      const savedNames = JSON.parse(localStorage.getItem('familyNames') || '[]');
+      const nameButtons = document.getElementById('nameButtons');
+      nameButtons.innerHTML = '';
+      
+      if (savedNames.length > 0) {
+        savedNames.forEach(name => {
+          const btn = document.createElement('button');
+          btn.textContent = name;
+          btn.style.cssText = "padding: 12px; border-radius: 10px; border: 1px solid var(--primary); background: white; color: var(--primary); font-weight: 600; cursor: pointer;";
+          btn.onclick = () => selectName(name);
+          nameButtons.appendChild(btn);
+        });
+      }
+    }
+
+    function selectName(name) {
+      currentUser = name;
+      document.getElementById('welcomeScreen').style.display = 'none';
+    }
+
+    function addNewName() {
+      const input = document.getElementById('newNameInput').value.trim();
+      if (!input) return alert("Hãy nhập tên của bạn nhé!");
+      
+      const savedNames = JSON.parse(localStorage.getItem('familyNames') || '[]');
+      if (!savedNames.includes(input)) {
+        savedNames.push(input);
+        localStorage.setItem('familyNames', JSON.stringify(savedNames));
+      }
+      selectName(input);
+    }
+
+    // Chạy khi mở web
+    initWelcomeScreen();
     // THAY ĐƯỜNG DẪN WEB APP URL CỦA BẠN VÀO ĐÂY
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlzpiBPdjrXIFnXLUJxpOtpAF9FAHS0ck99fEC22z22yxXC4BRUh26oSzzoImHLRyf/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4bJ2MhDmGF8qoSha8u9KWDs8L_UBJz5X-jGbB44AnsQz1h28TxBt9B93Gll7itgQ/exec';
 
     const fileInput = document.getElementById('fileInput');
     const preview = document.getElementById('preview');
@@ -270,7 +327,9 @@
             card.className = 'photo-card';
             card.innerHTML = `
               <img src="${item.url}" alt="${item.caption}" loading="lazy" onclick="openModal('${item.url.replace('w1200', 'w1920')}')">
+              <button class="btn-delete" onclick="deletePhoto('${item.id}')">🗑️ Xóa</button>
               <div class="photo-caption">${escapeHTML(item.caption)}</div>
+              <div class="photo-date" style="margin-top: 8px;">👤 ${escapeHTML(item.uploader)}</div>
               <div class="photo-date">📅 ${dateStr}</div>
             `;
             gallery.appendChild(card);
@@ -319,6 +378,7 @@
             mimeType: file.type,
             base64: base64Data,
             caption: caption || 'Kỉ niệm gia đình'
+            uploaderName: currentUser
           };
 
           const response = await fetch(SCRIPT_URL, {
@@ -357,6 +417,34 @@
       dropText.textContent = '📸 Nhấn vào đây để chọn nhiều ảnh';
       
       loadGallery();
+    }
+    async function deletePhoto(fileId) {
+      const pass = prompt("Nhập mật khẩu quản trị để xóa ảnh:");
+      if (pass === null) return; // Hủy thao tác
+      if (pass !== "1234") {
+        alert("❌ Mật khẩu không đúng!");
+        return;
+      }
+      
+      if (!confirm("Bạn có chắc chắn muốn xóa bức ảnh này không?")) return;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'delete', fileId: fileId })
+        });
+        
+        const result = await response.json();
+        if (result.status === 'success') {
+          alert("✅ Đã xóa ảnh thành công!");
+          loadGallery(); // Tải lại danh sách ảnh
+        } else {
+          alert("❌ Lỗi khi xóa: " + result.message);
+        }
+      } catch (err) {
+        alert("❌ Lỗi kết nối mạng!");
+      }
     }
 
     // Chống lỗi XSS khi hiển thị ghi chú
